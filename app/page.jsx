@@ -137,7 +137,7 @@ const Home = () => {
                                             value={count || 0}
                                             min="1"
                                             max="365"
-                                            className="text-base md:text-lg mt-6 w-full h-10 md:h-12 border-2 p-2 px-4 bg-transparent border-slate-600 rounded-full placeholder:text-indigo-300 text-indigo-300"
+                                            className="text-base md:text-lg mt-6 w-full h-10 md:h-12 border-2 p-2 px-4 bg-transparent border-slate-600 rounded-full placeholder:text-indigo-300 text-indigo-300 focus:outline-none"
                                             onChange={handleCount}
                                             ref={tempRef}
                                         />
