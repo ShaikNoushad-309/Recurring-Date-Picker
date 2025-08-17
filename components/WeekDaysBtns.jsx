@@ -1,8 +1,10 @@
+
+"use client"
 import React, {useContext} from 'react';
-import {AppContext} from "@/app/ContextProvider";
+import {ClientAppContext} from "@/context/ClientContextProvider";
 
 const WeekDaysBtns = () => {
-    const {selectedWeekDays, setSelectedWeekDays} = useContext(AppContext);
+    const {selectedWeekDays, setSelectedWeekDays} = useContext(ClientAppContext);
     // const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const weekDays = [{dayName:'Sun',value:0,isSelected:false},
         {dayName:'Mon',value:1,isSelected:false},

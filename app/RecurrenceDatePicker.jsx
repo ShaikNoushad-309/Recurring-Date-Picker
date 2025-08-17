@@ -1,16 +1,17 @@
 "use client"
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {AppContext} from "@/app/ContextProvider";
-import {addDays, addMonths, addWeeks, addYears, formatDate, isAfter,
-    isBefore, isSameDay, isValid,getNextWeekday,
-    getNextOccurence,getNextOccurrences   } from '@/utils/dateUtilityMethods'
-// import { addMonths, addWeeks, addYears, format, isAfter, isBefore, isSameDay, isValid} from 'date-fns'
-// import {addDays} from "@/utils/dateUtilityMethods";
+import React, {useContext, useEffect, useMemo} from 'react';
+import {ClientAppContext} from "@/context/ClientContextProvider.jsx";
+import {addDays,  addWeeks, addYears,  isAfter,
+     isSameDay, isValid,getNextWeekday,
+    getNextOccurence   } from '@/utils/dateUtilityMethods.js'
+import {ServerAppContext} from "@/context/ClientContextProvider2";
+import axios from "axios";
+import {toast} from "react-toastify";
 
 
 // import {console} from "next/dist/compiled/@edge-runtime/primitives";
 
-const RecurrenceDatePicker = () => {
+const RecurrenceDatePicker =  () => {
     const { freq,
         startDate,
         setStartDate,
@@ -20,11 +21,15 @@ const RecurrenceDatePicker = () => {
         endDate,
         count,
         selectedWeekDays,
-        resultantDays,
-        setResultantDays,
         selectedCustomOption,
         setSelectedCustomOption,
-    } = useContext(AppContext);
+    } = useContext(ClientAppContext);
+
+    const {resultantDays,
+        setResultantDays,
+        isInitialised,
+    } = useContext(ServerAppContext);
+
 
     // const [dailyDays, setDailyDays] = useState([]);
     // const [resultantDays, setResultantDays] = useState([]);
@@ -250,17 +255,36 @@ const RecurrenceDatePicker = () => {
     //
     // }, [resultantDays]);
 
-    useEffect(() => {
+    useEffect(()  => {
+        if(!isInitialised) return;
         console.log("daily Days after state update: ", resultantDays);
-    }, [resultantDays]);
+        const datesArr = [...resultantDays];
+        async function  postDates(rawDates){
+            try{
+                const {data} = await axios.post('/api/setdates',{rawDates},{
+                    request:{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            credentials: 'include',
+                        }
+                    }
+                });
+                console.log("Response from save dates to db: ",data);
+                toast.success(data.message);
+            }catch (err){
+                console.log("Error in saving dates to db: ",err);
+            }
+        }
+        postDates(datesArr);
+    }, [resultantDays,isInitialised]);
 
     return (
         <>
            {/*<div className="w-full h-full flex flex-row flex-wrap overflow-y-auto justify-center items-center">*/}
             <div className="w-full h-full flex flex-col justify-center items-center py-4">
-               <h3 className=" text-lg font-bold mb-2 text-blue-950">Recurring Dates :</h3>
+               <h3 className=" text-lg font-bold mb-2 text-indigo-200">Recurring Dates :</h3>
 
-               {resultantDays.length > 0?
+               {resultantDays && resultantDays.length > 0?
                    resultantDays.map((date,index)=>{
                        // return (<p key={index}><strong>{`${new Date(date).toString().split(' ')[0]}  ${formatDate(date)}`}</strong></p>)
 

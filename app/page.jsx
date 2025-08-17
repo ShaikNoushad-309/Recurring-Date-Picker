@@ -1,7 +1,7 @@
 
 "use client"
 import React, {useState,useRef, useContext, useEffect} from 'react';
-import {AppContext} from "@/app/ContextProvider";
+import {ClientAppContext} from "@/context/ClientContextProvider";
 import RecurrenceDatePicker from "@/app/RecurrenceDatePicker";
 import {isBefore, isValid} from "@/utils/dateUtilityMethods";
 // import {isBefore, isValid} from "date-fns";
@@ -19,7 +19,7 @@ const Home = () => {
         setEndDate,
         count,
         setCount,
-    } = useContext(AppContext);
+    } = useContext(ClientAppContext);
 
 
     const [errors, setErrors] = useState({});
@@ -59,38 +59,38 @@ const Home = () => {
 
     useEffect(() => {
         validateForm();
-    },[startDate,endDate,freq,count])
+    },[startDate,endDate,freq,count]);
 
     const handleFreqSelection = (e) => {
         const selectedFreq = e.target.value;
-        setFreq(selectedFreq)
-        console.log("freq selected: ",selectedFreq)
+        setFreq(selectedFreq);
+        console.log("freq selected: ",selectedFreq);
     }
     const handleStartDate = (e) => {
         const selectedStDate = e.target.value;
         setStartDate(selectedStDate);
-        console.log("Start Date: ",selectedStDate)
+        console.log("Start Date: ",selectedStDate);
     }
     const handleEndDate = (e) => {
         const selectedEndDate = e.target.value;
         setEndDate(selectedEndDate);
-        console.log("End Date: ",selectedEndDate)
+        console.log("End Date: ",selectedEndDate);
     }
     const handleCount = (e) => {
         const selectedCount = e.target.value;
-        setCount(selectedCount)
-        console.log("Max Occurences: ",selectedCount)
+        setCount(selectedCount);
+        console.log("Max Occurences: ",selectedCount);
     }
     const tempRef = useRef(null);
 
 
         return (
             <>
-                <main className="w-full min-h-screen max-h-fit flex flex-col bg-slate-900 text-white overflow-x-hidden">
+                <main className="w-full min-h-screen max-h-fit flex flex-col bg-slate-900  text-indigo-300 overflow-x-hidden">
                     <Navbar />
-                    <div className="w-full flex-1 flex flex-col md:flex-row gap-2 md:gap-5 p-2 md:p-4 overflow-y-auto">
+                    <div className="w-full flex-1 flex flex-col md:flex-row gap-2 md:gap-5 p-2 md:p-4  overflow-y-auto">
                         {/* Left Panel */}
-                        <div className='w-full md:w-[65%] lg:w-[60%] h-full flex flex-col rounded-lg gap-2 md:gap-3 bg-gradient-to-b from-slate-500 to-slate-700'>
+                        <div className='w-full md:w-[65%] lg:w-[60%] h-full flex flex-col rounded-lg bg-slate-800 gap-2 md:gap-3 '>
                             <div className="w-full  flex-1 flex flex-col gap-2 md:gap-4 p-2 md:p-4 overflow-y-auto">
                                 {/* Frequency Selector */}
                                 <div className="w-full max-w-[600px] mx-auto px-2 h-24">
@@ -100,7 +100,7 @@ const Home = () => {
                                             id="frequency"
                                             name="recurring_options"
                                             value={freq || ''}
-                                            className="text-base md:text-lg w-full mt-6 h-10 md:h-12 px-2 border-2 text-white bg-transparent border-white rounded-full"
+                                            className="text-base md:text-lg w-full mt-6 h-10 md:h-12 px-2 border-2 text-indigo-300 border-slate-600 focus:outline-none rounded-full"
                                             onChange={handleFreqSelection}
                                         >
                                             <option value="" className="text-slate-900">Select frequency</option>
@@ -137,14 +137,14 @@ const Home = () => {
                                             value={count || 0}
                                             min="1"
                                             max="365"
-                                            className="text-base md:text-lg mt-6 w-full h-10 md:h-12 border-2 p-2 px-4 bg-transparent border-white rounded-full placeholder:text-white text-white"
+                                            className="text-base md:text-lg mt-6 w-full h-10 md:h-12 border-2 p-2 px-4 bg-transparent border-slate-600 rounded-full placeholder:text-indigo-300 text-indigo-300"
                                             onChange={handleCount}
                                             ref={tempRef}
                                         />
-                                        {freq === 'daily' && <span className="absolute bottom-2 left-4 text-sm md:text-base">days</span>}
-                                        {freq === 'weekly' && <span className="absolute bottom-2 left-4 text-sm md:text-base">weeks</span>}
-                                        {freq === 'monthly' && <span className="absolute bottom-2 left-4 text-sm md:text-base">months</span>}
-                                        {freq === 'yearly' && <span className="absolute bottom-2 left-4 text-sm md:text-base">years</span>}
+                                        {freq === 'daily' && <span className="absolute bottom-1 left-4 text-sm md:text-base">days</span>}
+                                        {freq === 'weekly' && <span className="absolute bottom-1 left-4 text-sm md:text-base">weeks</span>}
+                                        {freq === 'monthly' && <span className="absolute bottom-1 left-4 text-sm md:text-base">months</span>}
+                                        {freq === 'yearly' && <span className="absolute bottom-1 left-4 text-sm md:text-base">years</span>}
                                         {getFieldErrors('count') && (
                                             <span className="text-red-400 text-xs mt-1">{getFieldErrors('count')}</span>
                                         )}
@@ -160,20 +160,20 @@ const Home = () => {
                                             type="date"
                                             value={startDate || ''}
                                             onChange={handleStartDate}
-                                            className="p-2 h-10 w-full text-white bg-transparent border-2 border-white rounded-full"
+                                            className="p-2 h-10 w-full text-indigo-300 border-2 border-slate-600 focus:outline-none rounded-full"
                                         />
                                     </div>
-                                    <div className="w-full sm:w-1/2 h-full flex flex-col justify-center gap-1 p-2">
+                                    <div className="relative w-full sm:w-1/2 h-full flex flex-col justify-center gap-1 p-2">
                                         <label htmlFor="end-date" className="text-sm md:text-lg">End Date (optional)</label>
                                         <input
                                             id="end-date"
                                             type="date"
                                             value={endDate || ''}
                                             onChange={handleEndDate}
-                                            className="p-2 h-10 w-full text-white bg-transparent border-2 border-white rounded-full"
+                                            className="p-2 h-10 w-full text-indigo-300 border-2 border-slate-600 focus:outline-none rounded-full"
                                         />
                                         {getFieldErrors('endDate') && (
-                                            <span className="text-red-400 text-xs mt-1">{getFieldErrors('endDate')}</span>
+                                            <span className="absolute bottom-[-12px] ml-3 text-red-400 text-xs mt-3">{getFieldErrors('endDate')}</span>
                                         )}
                                     </div>
                                 </div>
@@ -181,7 +181,7 @@ const Home = () => {
                                 {/* Form Validation Message */}
                                 <div className="w-full text-center p-2">
                                     {isFormValid ? (
-                                        <p className="text-white">got some dates . . . </p>
+                                        <p className="text-indigo-300">got some dates . . . </p>
                                     ) : (
                                         <p className="text-cyan-400">Start date is required!</p>
                                     )}
@@ -190,7 +190,7 @@ const Home = () => {
                         </div>
 
                         {/* Right Panel */}
-                        <div className="w-full md:w-[35%] lg:w-[30%] h-full rounded-lg bg-gradient-to-b from-slate-500 to-slate-700 overflow-hidden">
+                        <div className="w-full md:w-[35%] lg:w-[30%] h-full rounded-lg bg-slate-800 overflow-hidden">
                             <RecurrenceDatePicker />
                         </div>
                     </div>

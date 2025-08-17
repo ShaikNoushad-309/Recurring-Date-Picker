@@ -1,12 +1,12 @@
 "use client"
 
 import React, {useContext, useState} from 'react';
-import {AppContext} from "@/app/ContextProvider";
+import {ClientAppContext} from "@/context/ClientContextProvider.jsx";
 // import {monthsInYear} from "date-fns/constants";
 
 const CustomOptionsforYear = () => {
 
-    const {selectedCustomOption, setSelectedCustomOption} = useContext(AppContext);
+    const {selectedCustomOption, setSelectedCustomOption} = useContext(ClientAppContext);
     // const emptyText = {text:''};
     const [inputOption, setInputOption] = useState('');
 
